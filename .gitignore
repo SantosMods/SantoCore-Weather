@@ -1,0 +1,23 @@
+# Lua
+*.luac
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# FiveM
+.cache/
+.DS_Store
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Logs
+logs/
+*.log
+
+# System
+Thumbs.db
+ehthumbs.db
