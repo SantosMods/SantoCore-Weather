@@ -1,13 +1,17 @@
 -- fxmanifest.lua
 
 fx_version 'cerulean'
+lua54 'yes'
 game 'gta5'
 
 author 'SantosMods.dev'
 description 'SantosCore Project: Weather Control Module with Badger_Discord_API support'
-version '1.1.0'
+version '1.2.0'
 
-shared_script 'config.lua'
+shared_scripts {
+    '@ox_lib/init.lua',
+    'config.lua'
+}
 client_script 'client/main.lua'
 server_script 'server/main.lua'
 

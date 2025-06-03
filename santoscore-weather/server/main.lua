@@ -4,6 +4,7 @@
 -- Internal state tracking
 local freezeEnabled   = false
 local blackoutEnabled = false
+local currentWeather  = 'CLEAR'
 
 -- Helper to pick a random weather type from standard list
 local function GetRandomWeather()
@@ -33,6 +34,7 @@ end
 -- On request to set specific weather
 RegisterNetEvent('santoscore-weather:serverSetWeather', function(weather)
     freezeEnabled = false
+    currentWeather = weather
     TriggerClientEvent('santoscore-weather:clientSyncWeather', -1, weather)
 end)
 
@@ -40,22 +42,22 @@ end)
 RegisterNetEvent('santoscore-weather:serverSetRandom', function()
     freezeEnabled = false
     local randomWeather = GetRandomWeather()
+    currentWeather = randomWeather
     TriggerClientEvent('santoscore-weather:clientSyncRandom', -1, randomWeather)
 end)
 
 -- On request to advance to next weather
 RegisterNetEvent('santoscore-weather:serverSetNext', function()
     freezeEnabled = false
-    -- Assume current server weather stored somewhere; for simplicity, pick random next
-    local curr = GetRandomWeather()
-    local nextW = GetNextWeather(curr)
+    local nextW = GetNextWeather(currentWeather)
+    currentWeather = nextW
     TriggerClientEvent('santoscore-weather:clientSyncNext', -1, nextW)
 end)
 
 -- Toggle freeze
 RegisterNetEvent('santoscore-weather:serverToggleFreeze', function()
     freezeEnabled = not freezeEnabled
-    TriggerClientEvent('santoscore-weather:clientSyncFreeze', -1, freezeEnabled)
+    TriggerClientEvent('santoscore-weather:clientSyncFreeze', -1, freezeEnabled, currentWeather)
 end)
 
 -- Toggle blackout

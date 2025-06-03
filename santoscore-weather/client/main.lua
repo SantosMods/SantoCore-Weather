@@ -6,8 +6,19 @@ local menuStack = {}
 -- Helper to build the "Set Weather" submenu
 local function BuildWeatherTypeOptions()
     local items = {}
+    local ignore = {
+        RANDOM_WEATHER = true,
+        NEXT_WEATHER   = true,
+        FREEZE_WEATHER = true,
+        BLACKOUT       = true,
+        SET_TIME_MORNING = true,
+        SET_TIME_NOON    = true,
+        SET_TIME_EVENING = true,
+        SET_TIME_NIGHT   = true
+    }
+
     for _, w in ipairs(Config.WeatherTypes) do
-        if not w:find("SPECIAL_") then
+        if not ignore[w] then
             items[#items + 1] = {
                 title       = w,
                 description = '',
@@ -16,6 +27,7 @@ local function BuildWeatherTypeOptions()
             }
         end
     end
+
     return items
 end
 
@@ -148,13 +160,11 @@ RegisterNetEvent('santoscore-weather:clientSyncNext', function(weather)
 end)
 
 -- Sync freeze toggle
-RegisterNetEvent('santoscore-weather:clientSyncFreeze', function(isFrozen)
+RegisterNetEvent('santoscore-weather:clientSyncFreeze', function(isFrozen, weather)
     if isFrozen then
-        ClearOverrideWeather()
-        ClearWeatherTypePersist()
+        SetWeatherTypeNow(weather)
+        SetWeatherTypePersist(weather)
     else
-        -- simply allow weather to change normally on next cycles
-        ClearOverrideWeather()
         ClearWeatherTypePersist()
     end
 end)
