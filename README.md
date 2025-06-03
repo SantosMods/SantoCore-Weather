@@ -19,6 +19,7 @@ santoscore-weather is an open-source weather control script for FiveM, using the
 2. Ensure dependencies are started before this resource in your `server.cfg`:
    ```cfg
    ensure ox_lib
+   ensure Badger_Discord_API
    ensure santoscore-weather
    ```
 
